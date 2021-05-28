@@ -1,0 +1,40 @@
+org: '1300450409'
+app: chao-cloud
+stage: dev
+component: nextjs
+name: nextjs-sHj0n5lW6
+inputs:
+  src:
+    dist: ./
+    hook: npm run build
+    exclude:
+      - .env
+      - node_modules/**
+    src: ./
+  region: ap-shanghai
+  runtime: Nodejs10.15
+  apigatewayConf:
+    protocols:
+      - http
+      - https
+    environment: release
+    serviceTimeout: 60
+    autoCreateDns: false
+  isAutoCiDeploy: false
+  staticConf:
+    cosConf:
+      bucket: chao-cloud-dev-1300450409
+      acl:
+        permissions: public-read
+      sources:
+        - src: .next/static
+          targetDir: /_next/static
+        - src: public
+          targetDir: /
+  functionConf:
+    eip: false
+    timeout: 3
+    memorySize: 128
+  layers:
+    - name: '${output:${stage}:${app}:chao-cloud-layer.name}'
+      version: '${output:${stage}:${app}:chao-cloud-layer.version}'
